@@ -57,12 +57,24 @@ function startAccount(account) {
 			console.log(`Logged in as ${account.user.username}`);
 			await client.setPersona(SteamUser.EPersonaState.Online);
 			await client.gamesPlayed(config.games);
+			console.log(`Hourboosting started successfully for account ${account.user.username}`);
 			resolve();
 		});
+		
 
-		client.on("error", (err) => {
+		client.on("error", async (err) => {
 			console.log(`Error on account ${account.user.username}: ${err.message}`);
+			if (err.message.includes("RateLimitExceeded")) {
+				console.log(`Rate limit exceeded for account ${account.user.username}. Skipping to the next account.`);
+				resolve();
+			} else {
+				console.log(`Attempting to log in to the next account...`);
+				await client.logOff();
+				resolve();
+			}
 		});
+		
+		
 
 		client.on("disconnected", () => {
 			console.log(`Disconnected from account ${account.user.username}`);
