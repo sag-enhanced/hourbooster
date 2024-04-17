@@ -1,0 +1,11 @@
+{
+	"name": "hourboost",
+	"private": true,
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"steam-totp": "^2.1.2",
+		"steam-user": "^5.0.9"
+	}
+}
